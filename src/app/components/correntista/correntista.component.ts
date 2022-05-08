@@ -1,21 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CorrentistaService } from 'src/app/services/correntista.service';
-import { MovimentacaoService } from 'src/app/services/movimentacao.service';
 
 @Component({
-  selector: 'app-movimentacao-list',
-  templateUrl: './movimentacao-list.component.html',
-  styleUrls: ['./movimentacao-list.component.css']
+  selector: 'app-correntista',
+  templateUrl: './correntista.component.html',
+  styleUrls: ['./correntista.component.css']
 })
-export class MovimentacaoListComponent implements OnInit {
-  movimentacoes:any;
+export class CorrentistaComponent implements OnInit {
+  cpf:any;
+  nome:any;
   correntistas:any;
-  correntista:any;
-
   constructor(
-    private movimentacaoService: MovimentacaoService,
     private correntistaService: CorrentistaService,
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.exibirCorrentistas();
@@ -31,13 +28,17 @@ export class MovimentacaoListComponent implements OnInit {
           console.log(error);
         });
   }
-
-  listMovimentacoes(): void {
-    this.movimentacaoService.findByIdConta(this.correntista.id)
+  save(): void {
+    const correntista = {
+      cpf:this.cpf,
+      nome:this.nome
+  };
+  console.log(correntista);
+    this.correntistaService.create(correntista)
       .subscribe(
-        data => {
-          this.movimentacoes = data;
-          console.log(data);
+        response => {
+          console.log(response);
+          this.exibirCorrentistas();
         },
         error => {
           console.log(error);
